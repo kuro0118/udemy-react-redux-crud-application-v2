@@ -1,38 +1,38 @@
-// chips: propsに対して型チェックを導入するモジュール
-import PropTypes from 'prop-types';
+import { Component } from "react"
 
-const App = () => {
+// chips: 波括弧の場合は波括弧の中でreturnが必要
+//        丸括弧の場合は呼び出し先でreturnが必要
+const App = () => (<Counter></Counter>)
 
-  // chips: 3つ目(コメント)の値がstring型なのに数値型になっているため、ブラウザでエラーが出る。
-  // chips: 4つ目(コメント)の値はageが未指定のため、ブラウザでエラーが出る。
-  const profiles = [
-    { name: "Taro", age: 10 },
-    { name: "Hanako", age: 5 },
-    // { name: 1, age: "10" }
-    // { name: "No Name"}
-    { name: "No Name", age: 0}
-  ];
+class Counter extends Component {
+  // chips: constructor()は初期化時に実行されるメソッド
+  //        Counterコンポーネントが呼び出された時に一度実行される
+  constructor(props) {
+    super(props)
+    // chips: this.state = hogehogeで初期化する。
+    this.state = { count: 0 }
+  }
 
-  return (
-    <>
-      {profiles.map((profile, index) => {
-        return <User name={profile.name} age={profile.age} key={index} />
-      })}
-    </>
-  )
-}
+  handlePlusButton = () => {
+    // chips: ステートを設定する用のメソッド
+    //        setStateを行うと、ステートが変更されたと見なし、レンダリングが行われる。(render(hogehoge)がコールする)
+    this.setState({ count: this.state.count + 1});
+  }
 
-const User = (props) => {
-  return <div> Hi I am {props.name}!!{props.age} years old!! </div>
-}
+  handleMinusButton = () => {
+    this.setState({ count: this.state.count - 1});
+  }
 
-// chips: プロップスのフィールドに対して型を定義する。
-//        定義外の型の値がコンポーネントに渡された場合はブラウザでエラーが出る。
-// chips: .isRequiredを指定すると、その値が未指定の場合はブラウザエラーとして検知出来る。
-// refer: 設計の段階で、propsにどのようなプロパティを持たせるかを定義したりすることが多い。
-User.propTypes = {
-  name: PropTypes.string,
-  age: PropTypes.number.isRequired
+  render() {
+    console.log(this.state)
+    return (
+      <>
+        <div>counter: {this.state.count}</div>
+        <button onClick={this.handlePlusButton}>+1</button>
+        <button onClick={this.handleMinusButton}>-1</button>
+      </>
+    )
+  }
 }
 
 export default App;
