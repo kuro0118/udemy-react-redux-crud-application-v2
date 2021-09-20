@@ -1,38 +1,34 @@
 import { Component } from "react"
+import { connect } from 'react-redux'
 
-// chips: 波括弧の場合は波括弧の中でreturnが必要
-//        丸括弧の場合は呼び出し先でreturnが必要
-const App = () => (<Counter></Counter>)
+import { increment, decrement } from '../actions'
 
-class Counter extends Component {
-  // chips: constructor()は初期化時に実行されるメソッド
-  //        Counterコンポーネントが呼び出された時に一度実行される
-  constructor(props) {
-    super(props)
-    // chips: this.state = hogehogeで初期化する。
-    this.state = { count: 0 }
-  }
-
-  handlePlusButton = () => {
-    // chips: ステートを設定する用のメソッド
-    //        setStateを行うと、ステートが変更されたと見なし、レンダリングが行われる。(render(hogehoge)がコールする)
-    this.setState({ count: this.state.count + 1});
-  }
-
-  handleMinusButton = () => {
-    this.setState({ count: this.state.count - 1});
-  }
-
+class App extends Component {
   render() {
-    console.log(this.state)
+    const props = this.props;
     return (
       <>
-        <div>counter: {this.state.count}</div>
-        <button onClick={this.handlePlusButton}>+1</button>
-        <button onClick={this.handleMinusButton}>-1</button>
+        <div>value: {props.value}</div>
+        {/* chips: mapDispatchToPropsで定義したincrement、decrementをコールする。 */}
+        <button onClick={props.increment}>+1</button>
+        <button onClick={props.decrement}>-1</button>
       </>
     )
   }
 }
 
-export default App;
+// chips: mapStateToPropsとはステートの情報からコンポーネントに必要な情報を取り出し、コンポーネント内のプロップスにマッピングを行う。
+//        props.valueとしてクラスコンポーネント内で使用可能
+//        state.countのcountはリデューサーで定義したcount。
+//        >> 複数のリデューサーを作成した場合、state.hoge、state.hageみたいにリデューサー別の値を使用することが出来る。(今回はcountだけだけど..)
+//        　 親でstoreを渡すことで全ステートにアクセスすることを可能としているのかと
+const mapStateToProps = state => ({ value: state.count.value })
+// chips: mapDispatchToPropsとはあるアクションが発生したときにリデューサーに通知を送るための関数
+//        dispathの引数にはアクションクリエーターを指定する
+const mapDispatchToProps = dispatch => ({
+  increment: () => dispatch(increment()),
+  decrement: () => dispatch(decrement())
+})
+
+// chips： connect()はコンポーネントにステートとアクションを関連付ける関数
+export default connect(mapStateToProps, mapDispatchToProps)(App);
