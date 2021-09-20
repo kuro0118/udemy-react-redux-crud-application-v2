@@ -1,36 +1,38 @@
+// chips: propsに対して型チェックを導入するモジュール
+import PropTypes from 'prop-types';
+
 const App = () => {
 
-  // chips: No Nameのageはデフォルトプロップスで指定した値が使用されていることを確認
+  // chips: 3つ目(コメント)の値がstring型なのに数値型になっているため、ブラウザでエラーが出る。
+  // chips: 4つ目(コメント)の値はageが未指定のため、ブラウザでエラーが出る。
   const profiles = [
     { name: "Taro", age: 10 },
     { name: "Hanako", age: 5 },
-    { name: "No Name"}
+    // { name: 1, age: "10" }
+    // { name: "No Name"}
+    { name: "No Name", age: 0}
   ];
 
   return (
     <>
-      {/* chips: プロップス(props)は波括弧で渡す */}
-      {/* chips: JSのコードを描きたい場合は波括弧内に記載する */}
-      {/* chips: Reactの内部で変更したDOMがどれかを判定しているため、キーを指定する必要がある。 */}
       {profiles.map((profile, index) => {
-        return <User name={profile.name} age={profile.age} key={index}/>
+        return <User name={profile.name} age={profile.age} key={index} />
       })}
     </>
   )
 }
 
-// chips: propsを関数の引数として指定する。
 const User = (props) => {
-  // chips: 以下の様にアクセスしたいフィールドを .hoge と指定する。(オブジェクトのフィールド参照と同じイメージ)
-  // chips: divタグで囲む場合、returnと同じ行に<div>の先頭を記述しないと、コードとして認識されないので注意
-  // chips: divの代わりに<></>を使用すると、改行されないので注意。(<></> ≠ <div></div>)
   return <div> Hi I am {props.name}!!{props.age} years old!! </div>
 }
 
-// chips: コンポーネントが受け取るpropsに対して、デフォルト値を設定出来る。
-// chips: [コンポーネント].defaultPropsと記載
-User.defaultProps = {
-  age: 5
+// chips: プロップスのフィールドに対して型を定義する。
+//        定義外の型の値がコンポーネントに渡された場合はブラウザでエラーが出る。
+// chips: .isRequiredを指定すると、その値が未指定の場合はブラウザエラーとして検知出来る。
+// refer: 設計の段階で、propsにどのようなプロパティを持たせるかを定義したりすることが多い。
+User.propTypes = {
+  name: PropTypes.string,
+  age: PropTypes.number.isRequired
 }
 
 export default App;
