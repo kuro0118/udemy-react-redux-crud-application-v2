@@ -5,9 +5,10 @@ import { Provider } from 'react-redux';
 import reducer from './reducers'
 import './index.css';
 import EventsIndex from './components/events_index';
-// import EventsNew from './components/events_new';
+import EventsNew from './components/events_new';
 import reportWebVitals from './reportWebVitals';
 import thunk from 'redux-thunk'
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 // Linkを使用しているコンポーネントはラップする必要がある
 
 const store = createStore(reducer, applyMiddleware(thunk));
@@ -17,7 +18,7 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
         <Switch>
-          {/* <Route exact path='/events/new' components={EventsNew} /> */}
+          <Route exact path='/events/new' components={EventsNew} />
           <Route exact path='/' component={EventsIndex} />
         </Switch>
       </BrowserRouter>
