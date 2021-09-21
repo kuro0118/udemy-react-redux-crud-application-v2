@@ -14,16 +14,14 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 const store = createStore(reducer, applyMiddleware(thunk));
 
 ReactDOM.render(
-  <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <Switch>
-          <Route exact path='/events/new' components={EventsNew} />
+          <Route exact path='/events/new' component={EventsNew} />
           <Route exact path='/' component={EventsIndex} />
         </Switch>
       </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
   document.getElementById('root')
 );
 
