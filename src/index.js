@@ -1,23 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// chips: applyMiddlewareはミドルウェアを適用するための関数
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers'
 import './index.css';
 import EventsIndex from './components/events_index';
+// import EventsNew from './components/events_new';
 import reportWebVitals from './reportWebVitals';
-// chips: redux-thunkはアクションクリエーターで非同期処理を実装するためのミドルウェア
 import thunk from 'redux-thunk'
+// Linkを使用しているコンポーネントはラップする必要がある
 
-// chips: ここで定義したstoreはアプリケーション内で唯一のもの
-//        アプリケーション内のステートは全てこのstoreに集約されることとなる
 const store = createStore(reducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <EventsIndex />
+      <BrowserRouter>
+        <Switch>
+          {/* <Route exact path='/events/new' components={EventsNew} /> */}
+          <Route exact path='/' component={EventsIndex} />
+        </Switch>
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

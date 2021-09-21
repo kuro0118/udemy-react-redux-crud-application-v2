@@ -2,6 +2,7 @@ import { Component } from "react"
 import { connect } from 'react-redux'
 import { readEvents } from '../actions'
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 
 class EventsIndex extends Component {
   // chips: コンポーネントがマウントされた時に呼ばれる
@@ -11,7 +12,7 @@ class EventsIndex extends Component {
     this.props.readEvents()
   }
 
-  renderEvents () {
+  renderEvents() {
     return _.map(this.props.events, event => (
       <tr key={event.id}>
         <td>{event.id}</td>
@@ -23,18 +24,22 @@ class EventsIndex extends Component {
 
   render() {
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Body</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.renderEvents()}
-        </tbody>
-      </table>
+      <>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Body</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.renderEvents()}
+          </tbody>
+        </table>
+        {/* chips: 下記のリンク押下後のルーティングは親コンポーネント(index.js)に記載する */}
+        <Link to="/events/new">New Event</Link>
+      </>
     )
   }
 }
