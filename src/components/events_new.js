@@ -8,6 +8,7 @@ class EventsNew extends Component {
 
   constructor(props) {
     super(props)
+    // chips: 他のコンポーネントにthis.hogehogeを渡す場合は事前にbindが必要
     this.onSubmit = this.onSubmit.bind(this)
   }
 
@@ -31,9 +32,15 @@ class EventsNew extends Component {
     this.props.history.push('/')
   }
 
+  // chips: 上記のbindの件の続きだが、bindを使いたくない場合、以下の記載でもおｋらし
+  // onSubmit = async values => {
+  //   await this.props.postEvents(values)
+  //   this.props.history.push('/')
+  // }
+
   render() {
     // chips: 親コンポーネントからプロップスとして関数を渡している
-    const { handleSubmit } = this.props
+    const { handleSubmit, pristine, submitting } = this.props
     return (
       <form onSubmit={handleSubmit(this.onSubmit)} >
         <div>
@@ -41,7 +48,7 @@ class EventsNew extends Component {
           <Field label="Body" name="body" type="text" component={this.renderField} />
         </div>
         <div>
-          <input type="submit" value="SUBMIT" disabled={false} />
+          <input type="submit" value="SUBMIT" disabled={pristine || submitting} />
           <Link to="/">Cancel</Link>
         </div>
       </form>
@@ -56,8 +63,8 @@ const mapDispatchToProps = ({ postEvents })
 const validate = values => {
   const errors = {}
 
-  if(!values.title) errors.title = "Enter a title, please.";
-  if(!values.body) errors.body = "Enter a body, please." ;
+  if (!values.title) errors.title = "Enter a title, please.";
+  if (!values.body) errors.body = "Enter a body, please.";
 
   return errors
 }
